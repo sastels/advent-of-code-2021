@@ -6,15 +6,13 @@ jobs:
     name: CI tests
     strategy:
       matrix:
-        otp: ['24.0']
-        elixir: ['1.12.3']
         day: ['day01']
     steps:
       - uses: actions/checkout@v2
       - uses: erlef/setup-beam@v1
         with:
-          otp-version: ${{matrix.otp}}
-          elixir-version: ${{matrix.elixir}}
+          otp-version: '24.0'
+          elixir-version: '1.12.3'
 
       - name: Install dependencies
         run: mix deps.get
