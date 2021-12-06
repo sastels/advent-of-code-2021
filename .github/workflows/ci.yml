@@ -1,0 +1,22 @@
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: CI tests
+    strategy:
+      matrix:
+        day: ['day01']
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: '24.0'
+          elixir-version: '1.12.3'
+
+      - name: Install dependencies
+        run: mix deps.get
+        working-directory: ${{matrix.day}}
+      - name: Run tests ${{matrix.day}}
+        run: mix test
+        working-directory: ${{matrix.day}}
