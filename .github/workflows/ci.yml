@@ -3,7 +3,7 @@ on: push
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
+    name: CI tests
     strategy:
       matrix:
         otp: ['24.0']
@@ -19,6 +19,6 @@ jobs:
       - name: Install dependencies
         run: mix deps.get
         working-directory: ${{matrix.day}}
-      - name: Run tests
+      - name: Run tests ${{matrix.day}}
         run: mix test
         working-directory: ${{matrix.day}}
