@@ -13,5 +13,7 @@ jobs:
 
       - name: Install dependencies
         run: mix deps.get
+        working-directory: aoc21
       - name: Run tests
         run: mix test
+        working-directory: aoc21
