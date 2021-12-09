@@ -49,7 +49,7 @@ defmodule Day02 do
   end
 
   def main do
-    {:ok, contents} = File.read("day02.txt")
+    {:ok, contents} = File.read("data/day02.txt")
     commands = contents |> split_data() |> Enum.map(&parse_command_string/1)
 
     IO.inspect(part_1(commands), label: "part 1")
