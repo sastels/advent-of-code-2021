@@ -6,7 +6,7 @@ jobs:
     name: CI tests
     strategy:
       matrix:
-        day: ['day01']
+        day: ['day01', 'day02']
     steps:
       - uses: actions/checkout@v2
       - uses: erlef/setup-beam@v1
