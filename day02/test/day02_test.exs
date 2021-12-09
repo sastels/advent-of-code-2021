@@ -34,8 +34,8 @@ defmodule Day02Test do
     assert Day02.part_1(commands) == 150
   end
 
-  # test("part_2 works on example data") do
-  #   data = [199, 200, 208, 210, 200, 207, 240, 269, 260, 263]
-  #   assert Day02.part_2(data) == 5
-  # end
+  test("part_2 works on example data") do
+    commands = [{:forward, 5}, {:down, 5}, {:forward, 8}, {:up, 3}, {:down, 8}, {:forward, 2}]
+    assert Day02.part_2(commands) == 900
+  end
 end

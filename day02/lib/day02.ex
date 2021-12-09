@@ -39,11 +39,13 @@ defmodule Day02 do
     forward * depth
   end
 
+  def apply_command({:down, x}, {horiz, depth, aim}), do: {horiz, depth, aim + x}
+  def apply_command({:up, x}, {horiz, depth, aim}), do: {horiz, depth, aim - x}
+  def apply_command({:forward, x}, {horiz, depth, aim}), do: {horiz + x, depth + aim * x, aim}
+
   def part_2(commands) do
-    forward = 0
-    depth = 0
-    aim = 0
-    0
+    {horizontal, depth, _} = Enum.reduce(commands, {0, 0, 0}, &apply_command/2)
+    horizontal * depth
   end
 
   def main do
