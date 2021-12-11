@@ -33,7 +33,29 @@ defmodule Day03Test do
     assert [0, 0, 1] |> Day03.list_to_num() == 1
   end
 
+  test "most_common_bit" do
+    assert [1, 0, 1] |> Day03.most_common_bit() == 1
+    assert [1, 0, 1, 0, 0] |> Day03.most_common_bit() == 0
+    assert [1, 0, 0, 1] |> Day03.most_common_bit() == 1
+  end
+
+  test "least_common_bit" do
+    assert [1, 0, 1] |> Day03.least_common_bit() == 0
+    assert [1, 0, 1, 0, 0] |> Day03.least_common_bit() == 1
+    assert [1, 0, 0, 1] |> Day03.least_common_bit() == 0
+  end
+
+  test "filter_data_most_common_bit" do
+    data = [[1, 1], [0, 0], [1, 0]]
+    assert Day03.filter_data_most_common_bit(0, data) == [[1, 1], [1, 0]]
+    assert Day03.filter_data_most_common_bit(1, data) == [[0, 0], [1, 0]]
+  end
+
   test "part 1", %{data: data} do
     assert data |> Day03.part_1() == 198
+  end
+
+  test "part 2", %{data: data} do
+    assert data |> Day03.part_2() == 230
   end
 end
