@@ -16,20 +16,10 @@ defmodule Day03 do
     |> elem(0)
   end
 
-  def most_common_bit(x), do: if(Enum.sum(x) >= length(x) / 2, do: 1, else: 0)
-  def least_common_bit(x), do: if(Enum.sum(x) < length(x) / 2, do: 1, else: 0)
+  def common_bit(x, :most), do: if(Enum.sum(x) >= length(x) / 2, do: 1, else: 0)
+  def common_bit(x, :least), do: 1 - common_bit(x, :most)
 
-  def filter_data_most_common_bit(n, lists) do
-    bit =
-      lists
-      |> transpose()
-      |> Enum.at(n)
-      |> most_common_bit()
-
-    Enum.filter(lists, fn x -> Enum.at(x, n) == bit end)
-  end
-
-  def filter_data_least_common_bit(n, lists) do
+  def filter_data_common_bit(n, lists, type) do
     if length(lists) == 1 do
       lists
     else
@@ -37,7 +27,7 @@ defmodule Day03 do
         lists
         |> transpose()
         |> Enum.at(n)
-        |> least_common_bit()
+        |> common_bit(type)
 
       Enum.filter(lists, fn x -> Enum.at(x, n) == bit end)
     end
@@ -48,7 +38,7 @@ defmodule Day03 do
       data
       |> Enum.map(&parse_bits/1)
       |> transpose()
-      |> Enum.map(&most_common_bit/1)
+      |> Enum.map(&common_bit(&1, :most))
 
     gamma = bits |> list_to_num()
     epsilon = bits |> Enum.map(fn x -> 1 - x end) |> list_to_num()
@@ -62,13 +52,13 @@ defmodule Day03 do
 
     oxygen_generator_rating =
       Range.new(0, length(Enum.at(bits, 0)) - 1)
-      |> Enum.reduce(bits, &filter_data_most_common_bit/2)
+      |> Enum.reduce(bits, &filter_data_common_bit(&1, &2, :most))
       |> Enum.at(0)
       |> list_to_num()
 
     co2_scrubber_rating =
       Range.new(0, length(Enum.at(bits, 0)) - 1)
-      |> Enum.reduce(bits, &filter_data_least_common_bit/2)
+      |> Enum.reduce(bits, &filter_data_common_bit(&1, &2, :least))
       |> Enum.at(0)
       |> list_to_num()
 

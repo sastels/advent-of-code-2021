@@ -33,22 +33,22 @@ defmodule Day03Test do
     assert [0, 0, 1] |> Day03.list_to_num() == 1
   end
 
-  test "most_common_bit" do
-    assert [1, 0, 1] |> Day03.most_common_bit() == 1
-    assert [1, 0, 1, 0, 0] |> Day03.most_common_bit() == 0
-    assert [1, 0, 0, 1] |> Day03.most_common_bit() == 1
+  test "most common_bit" do
+    assert [1, 0, 1] |> Day03.common_bit(:most) == 1
+    assert [1, 0, 1, 0, 0] |> Day03.common_bit(:most) == 0
+    assert [1, 0, 0, 1] |> Day03.common_bit(:most) == 1
   end
 
-  test "least_common_bit" do
-    assert [1, 0, 1] |> Day03.least_common_bit() == 0
-    assert [1, 0, 1, 0, 0] |> Day03.least_common_bit() == 1
-    assert [1, 0, 0, 1] |> Day03.least_common_bit() == 0
+  test "least common_bit" do
+    assert [1, 0, 1] |> Day03.common_bit(:least) == 0
+    assert [1, 0, 1, 0, 0] |> Day03.common_bit(:least) == 1
+    assert [1, 0, 0, 1] |> Day03.common_bit(:least) == 0
   end
 
-  test "filter_data_most_common_bit" do
+  test "filter_data_common_bit :most" do
     data = [[1, 1], [0, 0], [1, 0]]
-    assert Day03.filter_data_most_common_bit(0, data) == [[1, 1], [1, 0]]
-    assert Day03.filter_data_most_common_bit(1, data) == [[0, 0], [1, 0]]
+    assert Day03.filter_data_common_bit(0, data, :most) == [[1, 1], [1, 0]]
+    assert Day03.filter_data_common_bit(1, data, :most) == [[0, 0], [1, 0]]
   end
 
   test "part 1", %{data: data} do
