@@ -3,7 +3,7 @@ defmodule Day04Test do
 
   setup do
     {:ok,
-     data: """
+     contents: """
      7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
      22 13 17 11  0
@@ -26,11 +26,64 @@ defmodule Day04Test do
      """}
   end
 
-  test "part 1", %{data: data} do
-    assert data |> Day04.part_1() == 1
+  test "mark_boards" do
+    r = [1, 2, 3, 4, 5]
+    r_m = [1, :marked, 3, 4, 5]
+    r2 = [11, 22, 33, 2, 55]
+    r2_m = [11, 22, 33, :marked, 55]
+    b1 = Enum.concat([r, r2, r, r, r2])
+    b1_m = Enum.concat([r_m, r2_m, r_m, r_m, r2_m])
+    b2 = Enum.concat([r2, r2, r, r2, r])
+    b2_m = Enum.concat([r2_m, r2_m, r_m, r2_m, r_m])
+    assert Day04.mark_boards(2, [b1, b2]) == [b1_m, b2_m]
   end
 
-  test "part 2", %{data: data} do
-    assert data |> Day04.part_2() == 2
+  test "row_marked" do
+    row = [1, 2, 3, 4, 5]
+    marked = [:marked, :marked, :marked, :marked, :marked]
+    b1 = Enum.concat([marked, row, marked, row, row])
+    assert !Day04.row_marked?(1, b1)
+
+    b2 = Enum.concat([row, marked, row, row, row])
+    assert Day04.row_marked?(1, b2)
+  end
+
+  test "col_marked" do
+    row = [1, 2, 3, 4, 5]
+    board = Enum.concat([row, row, row, row, row])
+    assert !Day04.col_marked?(3, board)
+
+    row = [1, 2, 3, :marked, 5]
+    board = Enum.concat([row, row, row, row, row])
+    assert Day04.col_marked?(3, board)
+  end
+
+  test "is_winning_board nope" do
+    row = [1, 2, 3, 4, 5]
+    board = Enum.concat([row, row, row, row, row])
+    assert !Day04.is_winning_board?(board)
+  end
+
+  test "is_winning_board row" do
+    row = [1, 2, 3, 4, 5]
+    marked = [:marked, :marked, :marked, :marked, :marked]
+    board = Enum.concat([row, row, row, marked, row])
+    assert Day04.is_winning_board?(board)
+  end
+
+  test "is_winning_board col" do
+    row = [1, :marked, 3, 4, 5]
+    board = Enum.concat([row, row, row, row, row])
+    assert Day04.is_winning_board?(board)
+  end
+
+  @tag :skip
+  test "part 1", %{contents: contents} do
+    assert contents |> Day04.part_1() == 4512
+  end
+
+  @tag :skip
+  test "part 2", %{contents: contents} do
+    assert contents |> Day04.part_2() == 2
   end
 end
