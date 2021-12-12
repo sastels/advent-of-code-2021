@@ -20,11 +20,14 @@ defmodule Day04 do
     {numbers, boards}
   end
 
+  def mark_board(number, board) do
+    board
+    |> Enum.map(fn x -> if x == number, do: :marked, else: x end)
+  end
+
   def mark_boards(number, boards) do
     boards
-    |> Enum.concat()
-    |> Enum.map(fn x -> if x == number, do: :marked, else: x end)
-    |> Enum.chunk_every(25)
+    |> Enum.map(&mark_board(number, &1))
   end
 
   def row_marked?(row, board) do
@@ -41,15 +44,50 @@ defmodule Day04 do
     row_marked || col_marked
   end
 
-  def play(numbers, boards) do
+  def sum_board(board) do
+    board
+    |> Enum.filter(fn x -> x != :marked end)
+    |> Enum.sum()
+  end
+
+  def play_number({number, index}, {nil, nil, nil, board}) do
+    board = mark_board(number, board)
+
+    if is_winning_board?(board) do
+      {number, index, number * sum_board(board), board}
+    else
+      {nil, nil, nil, board}
+    end
+  end
+
+  def play_number({_, _}, {number, index, score, board}), do: {number, index, score, board}
+
+  # return winning number, index, sum, and board
+  def play_board(numbers, board) do
+    Enum.zip([numbers, Range.new(0, length(numbers) - 1)])
+    |> Enum.reduce({nil, nil, nil, board}, &play_number/2)
   end
 
   def part_1(contents) do
-    parse_data(contents)
+    {numbers, boards} = parse_data(contents)
+
+    boards
+    |> Enum.map(&play_board(numbers, &1))
+    |> Enum.reduce({nil, nil}, fn {_, i, s, _}, {index, score} ->
+      if i < index, do: {i, s}, else: {index, score}
+    end)
+    |> elem(1)
   end
 
   def part_2(contents) do
-    contents
+    {numbers, boards} = parse_data(contents)
+
+    boards
+    |> Enum.map(&play_board(numbers, &1))
+    |> Enum.reduce({nil, nil}, fn {_, i, s, _}, {index, score} ->
+      if i > index, do: {i, s}, else: {index, score}
+    end)
+    |> elem(1)
   end
 
   def main do
