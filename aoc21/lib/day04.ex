@@ -62,10 +62,12 @@ defmodule Day04 do
 
   def play_number({_, _}, {number, index, score, board}), do: {number, index, score, board}
 
-  # return winning number, index, sum, and board
+  # return winning index, score
   def play_board(numbers, board) do
     Enum.zip([numbers, Range.new(0, length(numbers) - 1)])
     |> Enum.reduce({nil, nil, nil, board}, &play_number/2)
+    |> Tuple.delete_at(0)
+    |> Tuple.delete_at(2)
   end
 
   def part_1(contents) do
@@ -73,7 +75,7 @@ defmodule Day04 do
 
     boards
     |> Enum.map(&play_board(numbers, &1))
-    |> Enum.reduce({nil, nil}, fn {_, i, s, _}, {index, score} ->
+    |> Enum.reduce({nil, nil}, fn {i, s}, {index, score} ->
       if i < index, do: {i, s}, else: {index, score}
     end)
     |> elem(1)
@@ -84,7 +86,7 @@ defmodule Day04 do
 
     boards
     |> Enum.map(&play_board(numbers, &1))
-    |> Enum.reduce({nil, nil}, fn {_, i, s, _}, {index, score} ->
+    |> Enum.reduce({-1, -1}, fn {i, s}, {index, score} ->
       if i > index, do: {i, s}, else: {index, score}
     end)
     |> elem(1)
@@ -92,7 +94,6 @@ defmodule Day04 do
 
   def main do
     {:ok, contents} = File.read("data/day04.txt")
-
     IO.inspect(part_1(contents), label: "part 1")
     IO.inspect(part_2(contents), label: "part 2")
   end
