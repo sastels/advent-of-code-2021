@@ -8,7 +8,6 @@ defmodule Day04 do
 
   def parse_data(contents) do
     [number_string | board_strings] = contents |> String.split("\n", trim: true)
-
     numbers = number_string |> split_to_ints(",")
 
     boards =
