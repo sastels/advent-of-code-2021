@@ -50,16 +50,24 @@ defmodule Day05Test do
   test "add_line_to_grid vertical" do
     grid = %{width: 2, height: 3, data: {1, 2, 3, 4, 5, 6}}
     line = {{1, 0}, {1, 1}}
-    assert add_line_to_grid(grid, line)[:data] == {1, 3, 3, 5, 5, 6}
+    assert add_line_to_grid(line, grid)[:data] == {1, 3, 3, 5, 5, 6}
   end
 
   test "add_line_to_grid horizontal" do
     grid = %{width: 2, height: 3, data: {1, 2, 3, 4, 5, 6}}
     line = {{0, 1}, {1, 1}}
-    assert add_line_to_grid(grid, line)[:data] == {1, 2, 4, 5, 5, 6}
+    assert add_line_to_grid(line, grid)[:data] == {1, 2, 4, 5, 5, 6}
   end
 
-  @tag :skip
+  test "size_for_lines" do
+    lines = [
+      {{0, 9}, {5, 9}},
+      {{8, 0}, {0, 8}}
+    ]
+
+    assert size_for_lines(lines) == {9, 10}
+  end
+
   test "part 1", %{contents: contents} do
     assert contents |> Day05.part_1() == 5
   end

@@ -26,6 +26,13 @@ defmodule Day05 do
   def parse_line(s),
     do: s |> String.split(~r/\s*->\s*/, trim: true) |> Enum.map(&parse_point/1) |> List.to_tuple()
 
+  @spec size_for_lines(list(line_t)) :: {number, number}
+  def size_for_lines(lines) do
+    Enum.reduce(lines, {0, 0}, fn {{x0, y0}, {x1, y1}}, {x, y} ->
+      {Enum.max([x, x0 + 1, x1 + 1]), Enum.max([y, y0 + 1, y1 + 1])}
+    end)
+  end
+
   @spec empty_grid(number, number, any) :: grid_t
   def empty_grid(width, height, default),
     do: %{width: width, height: height, data: Tuple.duplicate(default, width * height)}
@@ -45,15 +52,15 @@ defmodule Day05 do
   def increment_grid_point(grid, point),
     do: set_grid_point(grid, point, get_grid_point(grid, point) + 1)
 
-  @spec add_line_to_grid(grid_t, line_t) :: grid_t
-  def add_line_to_grid(grid, {p0, p1}) when elem(p0, 0) == elem(p1, 0) do
+  @spec add_line_to_grid(line_t, grid_t) :: grid_t
+  def add_line_to_grid({p0, p1}, grid) when elem(p0, 0) == elem(p1, 0) do
     x = elem(p0, 0)
     y_start = min(elem(p0, 1), elem(p1, 1))
     y_end = max(elem(p0, 1), elem(p1, 1))
     y_start..y_end |> Enum.reduce(grid, &increment_grid_point(&2, {x, &1}))
   end
 
-  def add_line_to_grid(grid, {p0, p1}) when elem(p0, 1) == elem(p1, 1) do
+  def add_line_to_grid({p0, p1}, grid) when elem(p0, 1) == elem(p1, 1) do
     y = elem(p0, 1)
     x_start = min(elem(p0, 0), elem(p1, 0))
     x_end = max(elem(p0, 0), elem(p1, 0))
@@ -65,10 +72,25 @@ defmodule Day05 do
     do: String.split(contents, "\n", trim: true) |> Enum.map(&parse_line/1)
 
   def part_1(contents) do
-    contents
+    lines =
+      contents
+      |> String.split("\n", trim: true)
+      |> Enum.map(&parse_line/1)
+      |> Enum.filter(fn {{x0, y0}, {x1, y1}} -> x0 == x1 || y0 == y1 end)
+
+    {width, height} = size_for_lines(lines) |> IO.inspect(label: "size")
+    grid = empty_grid(width, height, 0)
+    grid = lines |> Enum.reduce(grid, fn line, grid -> add_line_to_grid(line, grid) end)
+    grid[:data] |> Tuple.to_list() |> Enum.filter(fn n -> n > 1 end) |> length()
   end
 
   def part_2(contents) do
     contents
+  end
+
+  def main do
+    {:ok, contents} = File.read("data/day05.txt")
+    IO.inspect(part_1(contents), label: "part 1")
+    # IO.inspect(part_2(contents), label: "part 2")
   end
 end
