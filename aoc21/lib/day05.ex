@@ -67,6 +67,14 @@ defmodule Day05 do
     x_start..x_end |> Enum.reduce(grid, &increment_grid_point(&2, {&1, y}))
   end
 
+  def add_line_to_grid({{x0, y0}, {x1, y1}}, grid) do
+    step_x = if x0 < x1, do: 1, else: -1
+    step_y = if y0 < y1, do: 1, else: -1
+
+    Enum.zip([Range.new(x0, x1, step_x), Range.new(y0, y1, step_y)])
+    |> Enum.reduce(grid, &increment_grid_point(&2, &1))
+  end
+
   @spec parse_data(String.t()) :: list(line_t)
   def parse_data(contents),
     do: String.split(contents, "\n", trim: true) |> Enum.map(&parse_line/1)
@@ -78,19 +86,27 @@ defmodule Day05 do
       |> Enum.map(&parse_line/1)
       |> Enum.filter(fn {{x0, y0}, {x1, y1}} -> x0 == x1 || y0 == y1 end)
 
-    {width, height} = size_for_lines(lines) |> IO.inspect(label: "size")
+    {width, height} = size_for_lines(lines)
     grid = empty_grid(width, height, 0)
     grid = lines |> Enum.reduce(grid, fn line, grid -> add_line_to_grid(line, grid) end)
     grid[:data] |> Tuple.to_list() |> Enum.filter(fn n -> n > 1 end) |> length()
   end
 
   def part_2(contents) do
-    contents
+    lines =
+      contents
+      |> String.split("\n", trim: true)
+      |> Enum.map(&parse_line/1)
+
+    {width, height} = size_for_lines(lines)
+    grid = empty_grid(width, height, 0)
+    grid = lines |> Enum.reduce(grid, fn line, grid -> add_line_to_grid(line, grid) end)
+    grid[:data] |> Tuple.to_list() |> Enum.filter(fn n -> n > 1 end) |> length()
   end
 
   def main do
     {:ok, contents} = File.read("data/day05.txt")
     IO.inspect(part_1(contents), label: "part 1")
-    # IO.inspect(part_2(contents), label: "part 2")
+    IO.inspect(part_2(contents), label: "part 2")
   end
 end
