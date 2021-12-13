@@ -34,6 +34,31 @@ defmodule Day05Test do
     assert parse_data("0,9 -> 5,9\n8,0 -> 0,8") == [{{0, 9}, {5, 9}}, {{8, 0}, {0, 8}}]
   end
 
+  test "get_grid_point" do
+    grid = %{width: 2, height: 3, data: {1, 2, 3, 4, 5, 6}}
+    assert get_grid_point(grid, {1, 0}) == 2
+    assert get_grid_point(grid, {0, 1}) == 3
+    assert get_grid_point(grid, {1, 2}) == 6
+  end
+
+  test "set_grid_point" do
+    grid = %{width: 2, height: 3, data: {1, 2, 3, 4, 5, 6}}
+    assert set_grid_point(grid, {0, 1}, 33) == %{width: 2, height: 3, data: {1, 2, 33, 4, 5, 6}}
+    assert set_grid_point(grid, {1, 2}, 66) == %{width: 2, height: 3, data: {1, 2, 3, 4, 5, 66}}
+  end
+
+  test "add_line_to_grid vertical" do
+    grid = %{width: 2, height: 3, data: {1, 2, 3, 4, 5, 6}}
+    line = {{1, 0}, {1, 1}}
+    assert add_line_to_grid(grid, line)[:data] == {1, 3, 3, 5, 5, 6}
+  end
+
+  test "add_line_to_grid horizontal" do
+    grid = %{width: 2, height: 3, data: {1, 2, 3, 4, 5, 6}}
+    line = {{0, 1}, {1, 1}}
+    assert add_line_to_grid(grid, line)[:data] == {1, 2, 4, 5, 5, 6}
+  end
+
   @tag :skip
   test "part 1", %{contents: contents} do
     assert contents |> Day05.part_1() == 5

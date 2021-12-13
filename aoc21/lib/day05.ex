@@ -30,17 +30,35 @@ defmodule Day05 do
   def empty_grid(width, height, default),
     do: %{width: width, height: height, data: Tuple.duplicate(default, width * height)}
 
-  # @spec grid_get_point(grid, number, number) :: grid_t
-  # def grid_get_point(grid, x, y) do
-  # end
+  @spec get_grid_point(grid_t, point_t) :: any
+  def get_grid_point(grid, {x, y}), do: elem(grid[:data], grid[:width] * y + x)
 
-  # @spec grid_set_point(grid_t, number, number, any) :: grid_t
-  # def grid_set_point(grid, x, y) do
-  # end
+  @spec set_grid_point(grid_t, point_t, any) :: grid_t
+  def set_grid_point(grid, {x, y}, value),
+    do: %{
+      width: grid[:width],
+      height: grid[:height],
+      data: put_elem(grid[:data], grid[:width] * y + x, value)
+    }
 
-  # @spec add_line_to_grid(line_t, grid_t) :: grid_t
-  # def add_line_to_grid(line, grid) do
-  # end
+  @spec increment_grid_point(grid_t, point_t) :: grid_t
+  def increment_grid_point(grid, point),
+    do: set_grid_point(grid, point, get_grid_point(grid, point) + 1)
+
+  @spec add_line_to_grid(grid_t, line_t) :: grid_t
+  def add_line_to_grid(grid, {p0, p1}) when elem(p0, 0) == elem(p1, 0) do
+    x = elem(p0, 0)
+    y_start = min(elem(p0, 1), elem(p1, 1))
+    y_end = max(elem(p0, 1), elem(p1, 1))
+    y_start..y_end |> Enum.reduce(grid, &increment_grid_point(&2, {x, &1}))
+  end
+
+  def add_line_to_grid(grid, {p0, p1}) when elem(p0, 1) == elem(p1, 1) do
+    y = elem(p0, 1)
+    x_start = min(elem(p0, 0), elem(p1, 0))
+    x_end = max(elem(p0, 0), elem(p1, 0))
+    x_start..x_end |> Enum.reduce(grid, &increment_grid_point(&2, {&1, y}))
+  end
 
   @spec parse_data(String.t()) :: list(line_t)
   def parse_data(contents),
