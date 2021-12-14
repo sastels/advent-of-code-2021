@@ -6,10 +6,6 @@ defmodule Day06Test do
     {:ok, contents: "3,4,3,1,2"}
   end
 
-  test "step_time" do
-    assert [0, 1, 2, 0, 3] |> step_time() == [6, 0, 1, 6, 2, 8, 8]
-  end
-
   test "parse_fish_map" do
     assert "0, 1, 2, 0, 3\n" |> parse_fish_map() == %{0 => 2, 1 => 1, 2 => 1, 3 => 1}
   end
@@ -32,8 +28,7 @@ defmodule Day06Test do
     assert contents |> part_1() == 5934
   end
 
-  @tag :skip
   test "part 2", %{contents: contents} do
-    assert contents |> part_2() == 0
+    assert contents |> part_2() == 26_984_457_539
   end
 end
