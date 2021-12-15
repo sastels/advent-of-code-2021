@@ -1,9 +1,4 @@
 defmodule Day07 do
-  # def median(nums) do
-  #   if length(nums) |> Integer.is_odd(), do: nums[length(nums) / 2]
-  # else: nums[length(nums)/2]
-  # end
-
   def parse_crabs(s),
     do:
       s
