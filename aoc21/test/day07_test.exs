@@ -10,8 +10,7 @@ defmodule Day07Test do
     assert contents |> part_1() == 37
   end
 
-  @tag :skip
   test "part 2", %{contents: contents} do
-    assert contents |> part_2() == nil
+    assert contents |> part_2() == 168
   end
 end
