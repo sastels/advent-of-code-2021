@@ -1,14 +1,13 @@
 defmodule Day07Test do
   use ExUnit.Case
-  import Day06
+  import Day07
 
   setup do
-    {:ok, contents: "hi there"}
+    {:ok, contents: "16,1,2,0,4,2,7,1,2,14"}
   end
 
-  @tag :skip
   test "part 1", %{contents: contents} do
-    assert contents |> part_1() == nil
+    assert contents |> part_1() == 37
   end
 
   @tag :skip

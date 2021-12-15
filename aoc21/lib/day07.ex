@@ -1,6 +1,23 @@
 defmodule Day07 do
+  # def median(nums) do
+  #   if length(nums) |> Integer.is_odd(), do: nums[length(nums) / 2]
+  # else: nums[length(nums)/2]
+  # end
+
+  def parse_crabs(s),
+    do:
+      s
+      |> String.split("\n", trim: true)
+      |> Enum.at(0)
+      |> String.split(~r/\s*,\s*/, trim: true)
+      |> Enum.map(&String.to_integer/1)
+      |> Enum.sort()
+
   def part_1(contents) do
-    contents
+    crabs = parse_crabs(contents)
+
+    best_position = Enum.at(crabs, div(length(crabs), 2)) |> IO.inspect(label: "best_position")
+    Enum.reduce(crabs, 0, fn x, acc -> acc + abs(x - best_position) end)
   end
 
   def part_2(contents) do
