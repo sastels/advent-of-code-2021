@@ -1,0 +1,76 @@
+# counts
+
+defmodule Day08 do
+  def parse_line(s) do
+    [s1, s2] = String.split(s, ~r/\s*\|\s*/, trim: true)
+    patterns = s1 |> String.split(~r/\s+/, trim: true) |> Enum.map(&String.graphemes/1)
+    values = s2 |> String.split(~r/\s+/, trim: true) |> Enum.map(&String.graphemes/1)
+    {patterns, values}
+  end
+
+  def get_stats(patterns) do
+    patterns
+    |> Enum.concat()
+    |> Enum.reduce(%{}, fn char, acc ->
+      Map.put(acc, char, (acc[char] || 0) + 1)
+    end)
+  end
+
+  # a : 8
+  # b : 6 *
+  # c : 8
+  # d : 7
+  # e : 4 *
+  # f : 9 *
+  # g : 7
+
+  # 1 contains c not a
+  # 4 contains d not g
+
+  def decrypt_from_frequencies(stats) do
+    stats
+    |> Enum.reduce(%{}, fn {k, v}, acc ->
+      cond do
+        v == 6 -> Map.put(acc, k, "b")
+        v == 4 -> Map.put(acc, k, "e")
+        v == 9 -> Map.put(acc, k, "f")
+        true -> acc
+      end
+    end)
+  end
+
+  # so pattern stands for 1
+  def decrypt_from_one(pattern, code, stats) do
+    pattern
+    |> Enum.reduce(code, fn c, code ->
+      if Map.get(stats, c) == 8 do
+        Map.put(code, c, "c")
+      else
+        code
+      end
+    end)
+  end
+
+  def decrypt(patterns) do
+    stats = get_stats(patterns)
+    code = decrypt_frequencies(stats)
+  end
+
+  def part_1(contents) do
+    contents
+    |> String.split("\n", trim: true)
+    |> Enum.map(&parse_line/1)
+    |> Enum.map(&elem(&1, 1))
+    |> Enum.filter(fn x -> Enum.member?([2, 4, 3, 7], length(x))
+  end
+
+  def part_2(contents) do
+    contents
+  end
+
+  def main do
+    {:ok, contents} = File.read("data/day07.txt")
+    IO.inspect(contents |> part_1(), label: "part 1")
+    # IO.inspect(contents |> part_2(), label: "part 2")
+  end
+end
