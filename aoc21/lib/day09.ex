@@ -1,6 +1,13 @@
 defmodule Day09 do
   def part_1(contents) do
     grid = Grid.new(contents)
+
+    Range.new(0, tuple_size(grid[:data]) - 1)
+    |> Enum.map(&Grid.position_to_point(&1, grid))
+    |> Enum.map(fn p -> {Grid.get(p, grid), Grid.min_adjacent(p, grid)} end)
+    |> Enum.filter(fn {n, adj} -> n < adj end)
+    |> Enum.map(fn {n, _} -> n + 1 end)
+    |> Enum.sum()
   end
 
   def part_2(contents) do
