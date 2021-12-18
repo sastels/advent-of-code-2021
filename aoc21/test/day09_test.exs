@@ -13,6 +13,11 @@ defmodule Day09Test do
      """}
   end
 
+  test "get_low_points", %{contents: contents} do
+    assert contents |> Grid.new() |> get_low_points() ==
+             [{1, 0}, {9, 0}, {2, 2}, {6, 4}]
+  end
+
   test "part 1", %{contents: contents} do
     assert contents |> part_1() == 15
   end

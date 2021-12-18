@@ -1,11 +1,12 @@
 defmodule Grid do
-  @type grid_t :: %{width: integer, data: tuple()}
+  @type grid_t :: %{width: integer, height: integer, data: tuple()}
   @type point_t :: {integer, integer}
 
   @spec new(String.t()) :: grid_t
   def new(contents) do
     lines = contents |> String.split("\n", trim: true)
     width = String.length(Enum.at(lines, 0))
+    height = length(lines)
 
     data =
       lines
@@ -14,7 +15,7 @@ defmodule Grid do
       |> Enum.map(&String.to_integer/1)
       |> List.to_tuple()
 
-    %{width: width, data: data}
+    %{width: width, height: height, data: data}
   end
 
   @spec point_to_position(point_t, grid_t) :: integer
@@ -31,8 +32,7 @@ defmodule Grid do
     do: %{grid | data: put_elem(grid[:data], point_to_position({x, y}, grid), value)}
 
   def is_valid_point?({x, y}, grid) do
-    x >= 0 && x < grid[:width] &&
-      y >= 0 && y < div(tuple_size(grid[:data]), grid[:width])
+    x >= 0 && x < grid[:width] && y >= 0 && y < grid[:height]
   end
 
   @spec min_adjacent(point_t, grid_t) :: any
@@ -41,5 +41,18 @@ defmodule Grid do
     |> Enum.filter(&is_valid_point?(&1, grid))
     |> Enum.map(&get(&1, grid))
     |> Enum.min()
+  end
+
+  def inspect(grid) do
+    grid[:data]
+    |> Tuple.to_list()
+    |> Enum.with_index()
+    |> Enum.each(fn {x, index} ->
+      if rem(index, grid[:width]) == 0, do: IO.write("\n")
+      IO.write(x)
+      IO.write(" ")
+    end)
+
+    grid
   end
 end

@@ -13,7 +13,7 @@ defmodule GridTest do
   end
 
   test "new", %{contents: contents} do
-    assert new(contents) == %{width: 3, data: {2, 1, 9, 4, 8, 5, 8, 9, 0, 1, 2, 3}}
+    assert new(contents) == %{width: 3, height: 4, data: {2, 1, 9, 4, 8, 5, 8, 9, 0, 1, 2, 3}}
   end
 
   test "point_to_position", %{contents: contents} do
@@ -40,8 +40,8 @@ defmodule GridTest do
 
   test "put", %{contents: contents} do
     grid = new(contents)
-    assert put(grid, {0, 2}, 11) == %{width: 3, data: {2, 1, 9, 4, 8, 5, 11, 9, 0, 1, 2, 3}}
-    assert put(grid, {1, 0}, 99) == %{width: 3, data: {2, 99, 9, 4, 8, 5, 8, 9, 0, 1, 2, 3}}
+    assert put(grid, {0, 2}, 11) == %{grid | data: {2, 1, 9, 4, 8, 5, 11, 9, 0, 1, 2, 3}}
+    assert put(grid, {1, 0}, 99) == %{grid | data: {2, 99, 9, 4, 8, 5, 8, 9, 0, 1, 2, 3}}
   end
 
   test "is_valid_point?", %{contents: contents} do
