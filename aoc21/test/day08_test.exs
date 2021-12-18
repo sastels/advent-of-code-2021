@@ -67,11 +67,6 @@ defmodule Day08Test do
   end
 
   test "break_length_5" do
-    words =
-      "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf"
-      |> parse_line()
-      |> elem(0)
-
     code = %{
       7 => "abd",
       1 => "ab",
