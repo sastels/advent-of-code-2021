@@ -1,11 +1,15 @@
-defmodule Day00Test do
+defmodule Day09Test do
   use ExUnit.Case
-  import Day00
+  import Day09
 
   setup do
     {:ok,
      contents: """
-     hi there
+     2199943210
+     3987894921
+     9856789892
+     8767896789
+     9899965678
      """}
   end
 
