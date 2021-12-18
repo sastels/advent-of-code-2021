@@ -34,13 +34,29 @@ defmodule GridTest do
 
   test "get", %{contents: contents} do
     grid = new(contents)
-    assert get(grid, {0, 2}) == 8
-    assert get(grid, {1, 0}) == 1
+    assert get({0, 2}, grid) == 8
+    assert get({1, 0}, grid) == 1
   end
 
   test "put", %{contents: contents} do
     grid = new(contents)
     assert put(grid, {0, 2}, 11) == %{width: 3, data: {2, 1, 9, 4, 8, 5, 11, 9, 0, 1, 2, 3}}
     assert put(grid, {1, 0}, 99) == %{width: 3, data: {2, 99, 9, 4, 8, 5, 8, 9, 0, 1, 2, 3}}
+  end
+
+  test "is_valid_point?", %{contents: contents} do
+    grid = new(contents)
+    assert is_valid_point?({0, 0}, grid)
+    assert is_valid_point?({2, 3}, grid)
+    assert !is_valid_point?({-1, 0}, grid)
+    assert !is_valid_point?({1, -3}, grid)
+    assert !is_valid_point?({0, 4}, grid)
+  end
+
+  test "min_adjacent", %{contents: contents} do
+    grid = new(contents)
+    assert min_adjacent({0, 0}, grid) == 1
+    assert min_adjacent({1, 2}, grid) == 0
+    assert min_adjacent({0, 3}, grid) == 2
   end
 end

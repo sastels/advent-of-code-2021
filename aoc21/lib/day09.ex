@@ -1,6 +1,6 @@
 defmodule Day09 do
   def part_1(contents) do
-    contents
+    grid = Grid.new(contents)
   end
 
   def part_2(contents) do
