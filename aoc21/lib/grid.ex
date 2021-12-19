@@ -35,10 +35,19 @@ defmodule Grid do
     x >= 0 && x < grid[:width] && y >= 0 && y < grid[:height]
   end
 
-  @spec min_adjacent(point_t, grid_t) :: any
-  def min_adjacent({x, y}, grid) do
+  def get_adjacent({x, y}, grid) do
     [{x - 1, y}, {x + 1, y}, {x, y - 1}, {x, y + 1}]
     |> Enum.filter(&is_valid_point?(&1, grid))
+  end
+
+  def get_all_points(grid) do
+    Range.new(0, grid[:width] * grid[:height] - 1)
+    |> Enum.map(&position_to_point(&1, grid))
+  end
+
+  @spec min_adjacent(point_t, grid_t) :: any
+  def min_adjacent(p, grid) do
+    get_adjacent(p, grid)
     |> Enum.map(&get(&1, grid))
     |> Enum.min()
   end
