@@ -1,6 +1,6 @@
 defmodule Day00Test do
   use ExUnit.Case
-  import Day00
+  # import Day00
 
   setup do
     {:ok,
