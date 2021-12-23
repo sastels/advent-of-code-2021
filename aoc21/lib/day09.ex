@@ -34,7 +34,7 @@ defmodule Day09 do
     get_low_points(grid)
     |> Enum.with_index()
     |> Enum.reduce(just_keep_peaks(grid), fn {p, index}, acc ->
-      Grid.put(acc, p, index)
+      Grid.put(p, acc, index)
     end)
   end
 
@@ -51,7 +51,7 @@ defmodule Day09 do
       true ->
         Grid.get_adjacent(p, grid)
         |> Enum.reduce(grid, fn p, acc ->
-          if Grid.get(p, acc) == :unknown, do: Grid.put(acc, p, value), else: acc
+          if Grid.get(p, acc) == :unknown, do: Grid.put(p, acc, value), else: acc
         end)
     end
   end
