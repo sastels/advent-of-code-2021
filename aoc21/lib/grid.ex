@@ -31,6 +31,10 @@ defmodule Grid do
   def put({x, y}, grid, value),
     do: %{grid | data: put_elem(grid[:data], point_to_position({x, y}, grid), value)}
 
+  def increment(p, grid) do
+    put(p, grid, get(p, grid) + 1)
+  end
+
   def is_valid_point?({x, y}, grid) do
     x >= 0 && x < grid[:width] && y >= 0 && y < grid[:height]
   end
