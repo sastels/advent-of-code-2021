@@ -40,6 +40,20 @@ defmodule Grid do
     |> Enum.filter(&is_valid_point?(&1, grid))
   end
 
+  def get_surrounding({x, y}, grid) do
+    [
+      {x - 1, y},
+      {x + 1, y},
+      {x, y - 1},
+      {x, y + 1},
+      {x - 1, y - 1},
+      {x - 1, y + 1},
+      {x + 1, y - 1},
+      {x + 1, y + 1}
+    ]
+    |> Enum.filter(&is_valid_point?(&1, grid))
+  end
+
   def get_all_points(grid) do
     Range.new(0, grid[:width] * grid[:height] - 1)
     |> Enum.map(&position_to_point(&1, grid))
