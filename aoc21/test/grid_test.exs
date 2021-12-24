@@ -14,6 +14,9 @@ defmodule GridTest do
 
   test "new", %{contents: contents} do
     assert new(contents) == %{width: 3, height: 4, data: {2, 1, 9, 4, 8, 5, 8, 9, 0, 1, 2, 3}}
+
+    assert new("219 485 890  123") ==
+             %{width: 3, height: 4, data: {2, 1, 9, 4, 8, 5, 8, 9, 0, 1, 2, 3}}
   end
 
   test "point_to_position", %{contents: contents} do
@@ -58,5 +61,10 @@ defmodule GridTest do
     assert min_adjacent({0, 0}, grid) == 1
     assert min_adjacent({1, 2}, grid) == 0
     assert min_adjacent({0, 3}, grid) == 2
+  end
+
+  test "shrink_to", %{contents: contents} do
+    assert new(contents) |> shrink_to(2, 3) == new("219 485")
+    assert new(contents) |> shrink_to(2, 1) == new("2 4")
   end
 end

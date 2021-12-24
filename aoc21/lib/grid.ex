@@ -4,7 +4,7 @@ defmodule Grid do
 
   @spec new(String.t()) :: grid_t
   def new(contents) do
-    lines = contents |> String.split("\n", trim: true)
+    lines = contents |> String.split(~r/\s+/, trim: true)
     width = String.length(Enum.at(lines, 0))
     height = length(lines)
 
@@ -81,5 +81,20 @@ defmodule Grid do
     end)
 
     grid
+  end
+
+  def shrink_to(grid, nrows, ncols) do
+    data =
+      grid[:data]
+      |> Tuple.to_list()
+      |> Enum.with_index(fn x, index -> {x, index} end)
+      |> Enum.filter(fn {_, n} ->
+        {x, y} = Grid.position_to_point(n, grid)
+        x < ncols && y < nrows
+      end)
+      |> Enum.map(&elem(&1, 0))
+      |> List.to_tuple()
+
+    %{width: ncols, height: nrows, data: data}
   end
 end
