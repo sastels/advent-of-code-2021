@@ -56,8 +56,11 @@ defmodule Day12Test do
     assert data_big |> part_1() == 226
   end
 
-  # @tag :skip
-  # test "part 2", %{contents: contents} do
-  #   assert contents |> part_2() == nil
-  # end
+  test "part 2 small", %{data_small: data_small} do
+    assert data_small |> part_2() == 36
+  end
+
+  test "part 2 big", %{data_big: data_big} do
+    assert data_big |> part_2() == 3509
+  end
 end
