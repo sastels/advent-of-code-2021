@@ -4,7 +4,7 @@ defmodule Grid do
 
   @spec new(String.t()) :: grid_t
   def new(contents) do
-    lines = contents |> String.split("\n", trim: true)
+    lines = contents |> String.split(~r/\s+/, trim: true)
     width = String.length(Enum.at(lines, 0))
     height = length(lines)
 
@@ -17,6 +17,16 @@ defmodule Grid do
 
     %{width: width, height: height, data: data}
   end
+
+  def new(width, height),
+    do: %{
+      width: width,
+      height: height,
+      data: List.duplicate(0, width * height) |> List.to_tuple()
+    }
+
+  def string_to_point(s),
+    do: s |> String.split(",") |> Enum.map(&String.to_integer(String.trim(&1))) |> List.to_tuple()
 
   @spec point_to_position(point_t, grid_t) :: integer
   def point_to_position({x, y}, grid), do: grid[:width] * y + x
@@ -76,10 +86,29 @@ defmodule Grid do
     |> Enum.with_index()
     |> Enum.each(fn {x, index} ->
       if rem(index, grid[:width]) == 0, do: IO.write("\n")
-      IO.write(x)
+
+      if x == 0,
+        do: IO.write("."),
+        else: IO.write(x)
+
       IO.write(" ")
     end)
 
     grid
+  end
+
+  def shrink_to(grid, nrows, ncols) do
+    data =
+      grid[:data]
+      |> Tuple.to_list()
+      |> Enum.with_index(fn x, index -> {x, index} end)
+      |> Enum.filter(fn {_, n} ->
+        {x, y} = Grid.position_to_point(n, grid)
+        x < ncols && y < nrows
+      end)
+      |> Enum.map(&elem(&1, 0))
+      |> List.to_tuple()
+
+    %{width: ncols, height: nrows, data: data}
   end
 end
