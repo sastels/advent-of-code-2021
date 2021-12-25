@@ -18,6 +18,13 @@ defmodule Grid do
     %{width: width, height: height, data: data}
   end
 
+  def new(width, height),
+    do: %{
+      width: width,
+      height: height,
+      data: List.duplicate(0, width * height) |> List.to_tuple()
+    }
+
   def string_to_point(s),
     do: s |> String.split(",") |> Enum.map(&String.to_integer(String.trim(&1))) |> List.to_tuple()
 
