@@ -86,8 +86,8 @@ defmodule Day13Test do
     assert contents |> part_1() == 17
   end
 
-  # @tag :skip
-  # test "part 2", %{contents: contents} do
-  #   assert contents |> part_2() == nil
-  # end
+  test "part 2", %{contents: contents} do
+    # really just want to see an "O"
+    assert contents |> part_2() != nil
+  end
 end

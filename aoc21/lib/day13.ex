@@ -62,8 +62,8 @@ defmodule Day13 do
         fold(points, f.dir, f.value)
       end)
 
-    width = final_points |> Enum.map(&elem(&1, 0)) |> Enum.max()
-    height = final_points |> Enum.map(&elem(&1, 1)) |> Enum.max()
+    width = 1 + (final_points |> Enum.map(&elem(&1, 0)) |> Enum.max())
+    height = 1 + (final_points |> Enum.map(&elem(&1, 1)) |> Enum.max())
 
     final_points
     |> Enum.reduce(Grid.new(width, height), &Grid.put(&1, &2, 1))
@@ -73,6 +73,6 @@ defmodule Day13 do
   def main do
     {:ok, contents} = File.read("data/day13.txt")
     IO.inspect(contents |> part_1(), label: "part 1")
-    # IO.inspect(contents |> part_2(), label: "part 2")
+    IO.inspect(contents |> part_2(), label: "part 2")
   end
 end

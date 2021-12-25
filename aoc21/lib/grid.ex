@@ -86,7 +86,11 @@ defmodule Grid do
     |> Enum.with_index()
     |> Enum.each(fn {x, index} ->
       if rem(index, grid[:width]) == 0, do: IO.write("\n")
-      IO.write(x)
+
+      if x == 0,
+        do: IO.write("."),
+        else: IO.write(x)
+
       IO.write(" ")
     end)
 
