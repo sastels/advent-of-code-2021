@@ -18,6 +18,9 @@ defmodule Grid do
     %{width: width, height: height, data: data}
   end
 
+  def string_to_point(s),
+    do: s |> String.split(",") |> Enum.map(&String.to_integer(String.trim(&1))) |> List.to_tuple()
+
   @spec point_to_position(point_t, grid_t) :: integer
   def point_to_position({x, y}, grid), do: grid[:width] * y + x
 

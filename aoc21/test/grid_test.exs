@@ -19,6 +19,11 @@ defmodule GridTest do
              %{width: 3, height: 4, data: {2, 1, 9, 4, 8, 5, 8, 9, 0, 1, 2, 3}}
   end
 
+  test "string_to_point" do
+    assert string_to_point("1,10") == {1, 10}
+    assert string_to_point("   2  ,   3  ") == {2, 3}
+  end
+
   test "point_to_position", %{contents: contents} do
     grid = new(contents)
     assert point_to_position({0, 0}, grid) == 0
