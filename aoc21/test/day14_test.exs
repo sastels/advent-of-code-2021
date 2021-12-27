@@ -76,7 +76,6 @@ defmodule Day14Test do
     assert contents |> part_1() |> Enum.member?(1588)
   end
 
-  @tag :skip
   test "part 2", %{contents: contents} do
     assert contents |> part_2() |> Enum.member?(2_188_189_693_529)
   end

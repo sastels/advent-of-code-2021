@@ -42,10 +42,7 @@ defmodule Day14 do
 
   def apply_rules(s, rules, n) do
     Range.new(1, n)
-    |> Enum.reduce(s, fn n, acc ->
-      IO.inspect(n)
-      apply_rules(acc, rules)
-    end)
+    |> Enum.reduce(s, fn _, acc -> apply_rules(acc, rules) end)
   end
 
   def spread(contents, n) do
