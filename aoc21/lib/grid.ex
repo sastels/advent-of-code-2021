@@ -1,5 +1,5 @@
 defmodule Grid do
-  @type grid_t :: %{width: integer, height: integer, data: tuple()}
+  @type grid_t :: %{width: integer, height: integer, size: integer, data: tuple()}
   @type point_t :: {integer, integer}
 
   @spec new(String.t()) :: grid_t
@@ -15,13 +15,14 @@ defmodule Grid do
       |> Enum.map(&String.to_integer/1)
       |> List.to_tuple()
 
-    %{width: width, height: height, data: data}
+    %{width: width, height: height, size: width * height, data: data}
   end
 
   def new(width, height),
     do: %{
       width: width,
       height: height,
+      size: width * height,
       data: List.duplicate(0, width * height) |> List.to_tuple()
     }
 
@@ -37,6 +38,9 @@ defmodule Grid do
   @spec get(point_t, grid_t) :: any
   def get({x, y}, grid), do: elem(grid[:data], point_to_position({x, y}, grid))
 
+  @spec get(grid_t, integer) :: any
+  def get(grid, v), do: elem(grid[:data], v)
+
   @spec put(point_t, grid_t, any) :: any
   def put({x, y}, grid, value),
     do: %{grid | data: put_elem(grid[:data], point_to_position({x, y}, grid), value)}
@@ -49,9 +53,17 @@ defmodule Grid do
     x >= 0 && x < grid[:width] && y >= 0 && y < grid[:height]
   end
 
+  def is_valid_position?(n, grid) do
+    n >= 0 && n < grid.size
+  end
+
   def get_adjacent({x, y}, grid) do
     [{x - 1, y}, {x + 1, y}, {x, y - 1}, {x, y + 1}]
     |> Enum.filter(&is_valid_point?(&1, grid))
+  end
+
+  def get_adjacent_positions(n, grid) do
+    n |> position_to_point(grid) |> get_adjacent(grid) |> Enum.map(&point_to_position(&1, grid))
   end
 
   def get_surrounding({x, y}, grid) do
@@ -69,7 +81,7 @@ defmodule Grid do
   end
 
   def get_all_points(grid) do
-    Range.new(0, grid[:width] * grid[:height] - 1)
+    Range.new(0, grid[:size] - 1)
     |> Enum.map(&position_to_point(&1, grid))
   end
 
@@ -109,6 +121,6 @@ defmodule Grid do
       |> Enum.map(&elem(&1, 0))
       |> List.to_tuple()
 
-    %{width: ncols, height: nrows, data: data}
+    %{width: ncols, height: nrows, size: ncols * nrows, data: data}
   end
 end
