@@ -13,10 +13,15 @@ defmodule GridTest do
   end
 
   test "new", %{contents: contents} do
-    assert new(contents) == %{width: 3, height: 4, data: {2, 1, 9, 4, 8, 5, 8, 9, 0, 1, 2, 3}}
+    assert new(contents) == %{
+             width: 3,
+             height: 4,
+             size: 12,
+             data: {2, 1, 9, 4, 8, 5, 8, 9, 0, 1, 2, 3}
+           }
 
     assert new("219 485 890  123") ==
-             %{width: 3, height: 4, data: {2, 1, 9, 4, 8, 5, 8, 9, 0, 1, 2, 3}}
+             %{width: 3, height: 4, size: 12, data: {2, 1, 9, 4, 8, 5, 8, 9, 0, 1, 2, 3}}
   end
 
   test "string_to_point" do
