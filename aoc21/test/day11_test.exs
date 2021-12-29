@@ -20,7 +20,7 @@ defmodule Day11Test do
 
   test "increment_levels" do
     assert Grid.new("111\n222") |> increment_levels() ==
-             %{width: 3, height: 2, data: {2, 2, 2, 3, 3, 3}}
+             %{width: 3, height: 2, size: 6, data: {2, 2, 2, 3, 3, 3}}
   end
 
   test "octo_step" do
