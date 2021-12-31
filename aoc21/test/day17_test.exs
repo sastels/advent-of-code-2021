@@ -2,20 +2,8 @@ defmodule Day17Test do
   use ExUnit.Case
   import Day17
 
-  setup do
-    {:ok,
-     contents: """
-     hi there
-     """}
+  test "part 2" do
+    target = %{x_min: 20, x_max: 30, y_min: -10, y_max: -5}
+    assert target |> part_2() == 112
   end
-
-  # @tag :skip
-  # test "part 1", %{contents: contents} do
-  #   assert contents |> part_1() == nil
-  # end
-
-  # @tag :skip
-  # test "part 2", %{contents: contents} do
-  #   assert contents |> part_2() == nil
-  # end
 end
