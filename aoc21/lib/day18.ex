@@ -1,4 +1,11 @@
 defmodule Day18 do
+  @type pair_t :: %{id: String.t(), parent: String.t(), left: term, right: term}
+
+  def new(sys) do
+    id = UUID.uuid4()
+    Map.put(sys, id, %{id: id, parent: nil, left: nil, right: nil})
+  end
+
   def part_1(contents) do
     contents
   end
