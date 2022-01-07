@@ -97,6 +97,19 @@ defmodule Snail do
     {Map.put(sys, id1, s1), id}
   end
 
+  @spec find_first_4_deep(system(), String.t() | integer(), non_neg_integer()) :: String.t() | nil
+  def find_first_4_deep(_sys, id0, _current_depth) when is_integer(id0), do: nil
+  def find_first_4_deep(_sys, id0, 4), do: id0
+
+  def find_first_4_deep(sys, id0, current_depth) do
+    snail = Map.get(sys, id0)
+    left = find_first_4_deep(sys, snail.left, current_depth + 1)
+
+    if left != nil,
+      do: left,
+      else: find_first_4_deep(sys, snail.right, current_depth + 1)
+  end
+
   @spec root(map()) :: String.t()
   def root(sys) do
     sys |> Enum.find(fn {_k, v} -> v.id == "" end) |> elem(0)
