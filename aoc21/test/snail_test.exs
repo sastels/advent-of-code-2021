@@ -43,4 +43,23 @@ defmodule SnailTest do
     assert right.left == 8
     assert right.right == 7
   end
+
+  test "to_string" do
+    {sys, id} = parse(%{}, "3")
+    assert to_string(sys, id) == "3"
+    {sys, id} = parse(%{}, "[1,2]")
+    assert to_string(sys, id) == "[1,2]"
+    {sys, id} = parse(%{}, "[9,[8,7]]")
+    assert to_string(sys, id) == "[9,[8,7]]"
+    {sys, id} = parse(%{}, "[[1,2],[3,4]]")
+    assert to_string(sys, id) == "[[1,2],[3,4]]"
+  end
+
+  test "add" do
+    sys = %{}
+    {sys, s0} = parse(sys, "[1,2]")
+    {sys, s1} = parse(sys, "[3,4]")
+    {sys, sum} = add(sys, s0, s1)
+    assert to_string(sys, sum) == "[[1,2],[3,4]]"
+  end
 end

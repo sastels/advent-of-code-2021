@@ -71,17 +71,30 @@ defmodule Snail do
     end
   end
 
+  @spec to_string(system, id() | integer()) :: String.t()
+  def to_string(sys, id) do
+    if is_integer(id) do
+      Integer.to_string(id)
+    else
+      snail = Map.get(sys, id)
+      "[" <> to_string(sys, snail.left) <> "," <> to_string(sys, snail.right) <> "]"
+    end
+  end
+
+  @spec inspect(system, id() | integer) :: :ok
+  def inspect(sys, id), do: IO.puts(to_string(sys, id))
+
   @spec add(system(), id(), id()) :: {system(), id()}
   def add(sys, id0, id1) do
     id = UUID.uuid4()
     s = %Snail{id: id, parent: "", left: id0, right: id1}
-    Map.put(sys, id, s)
+    sys = Map.put(sys, id, s)
     s0 = Map.get(sys, id0)
     s0 = %Snail{id: id0, parent: id, left: s0.left, right: s0.right}
     Map.put(sys, id0, s0)
     s1 = Map.get(sys, id1)
     s1 = %Snail{id: id1, parent: id, left: s1.left, right: s1.right}
-    {Map.put(sys, id, s1), id}
+    {Map.put(sys, id1, s1), id}
   end
 
   @spec root(map()) :: String.t()
