@@ -1,8 +1,8 @@
 defmodule Day18 do
   @type snail :: String.t()
 
-  @spec add(snail, snail) :: snail
-  def add(sn0, sn1), do: "[#{sn0},#{sn1}]"
+  @spec add_2(snail, snail) :: snail
+  def add_2(sn0, sn1), do: "[#{sn0},#{sn1}]" |> reduce
 
   @spec count_depth(String.t()) :: integer()
   def count_depth(s) do
@@ -40,7 +40,8 @@ defmodule Day18 do
         if length(recurse) == 1 do
           [s]
         else
-          [pre <> sn <> recurse[0], recurse[1], recurse[2]]
+          [r0, r1, r2] = recurse
+          [pre <> sn <> r0, r1, r2]
         end
       end
     end
@@ -102,6 +103,7 @@ defmodule Day18 do
     new_pre <> "0" <> new_post
   end
 
+  @spec try_explode(snail) :: {snail, boolean}
   def try_explode(sn) do
     depth_4 = first_depth_n(sn, 4)
 
@@ -109,6 +111,34 @@ defmodule Day18 do
       {sn, false}
     else
       {explode(depth_4), true}
+    end
+  end
+
+  def try_split(sn) do
+    split = Regex.split(~r{\d\d+}, sn, parts: 2, include_captures: true)
+
+    if length(split) == 1 do
+      {sn, false}
+    else
+      [pre, n, post] = split
+      n = String.to_integer(n)
+      {pre <> "[#{div(n, 2)},#{n - div(n, 2)}]" <> post, true}
+    end
+  end
+
+  def reduce(sn) do
+    {sn, did_explode} = try_explode(sn)
+
+    if did_explode do
+      reduce(sn)
+    else
+      {sn, did_split} = try_split(sn)
+
+      if did_split do
+        reduce(sn)
+      else
+        sn
+      end
     end
   end
 
